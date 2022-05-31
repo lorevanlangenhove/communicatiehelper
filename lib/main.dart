@@ -1,4 +1,17 @@
+import 'package:communicatiehelper/screens/calendar.dart';
+import 'package:communicatiehelper/screens/camera.dart';
+import 'package:communicatiehelper/screens/dairy.dart';
+import 'package:communicatiehelper/screens/drawing.dart';
+import 'package:communicatiehelper/screens/news.dart';
+import 'package:communicatiehelper/screens/photo.dart';
+import 'package:communicatiehelper/screens/settings.dart';
+import 'package:communicatiehelper/screens/social.dart';
+import 'package:communicatiehelper/screens/symbols.dart';
+import 'package:communicatiehelper/screens/user.dart';
+import 'package:communicatiehelper/screens/video.dart';
 import 'package:flutter/material.dart';
+import 'build_card.dart';
+import '../screens/maps.dart';
 
 void main() => runApp(Home());
 
@@ -6,14 +19,22 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: HomePage(),
-          ),
-        ),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/maps': (context) => MapsPage(),
+        '/dairy': (context) => DairyPage(),
+        '/news': (context) => NewsPage(),
+        '/calendar': (context) => CalendarPage(),
+        '/drawing': (context) => DrawingPage(),
+        '/settings': (context) => SettingsPage(),
+        '/user': (context) => UserssPage(),
+        '/symbols': (context) => SymbolsPage(),
+        '/camera': (context) => CameraPage(),
+        '/photo': (context) => PhotosPage(),
+        '/video': (context) => VideosPage(),
+        '/social': (context) => SocialsPage(),
+      },
     );
   }
 }
@@ -24,20 +45,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Card buildCard(String name, String naam) {
-    return Card(
-      child: InkWell(
-        splashColor: Colors.blue,
-        onTap: () {
-          print('Clicked $name');
-        },
-        child: Column(
-          children: [Image.asset('images/$name.png'), Text(naam)],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,28 +53,76 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildCard('maps', 'Kaarten'),
-            buildCard('dairy', 'Dagboek'),
-            buildCard('news', 'Nieuws'),
-            buildCard('calendar', 'Agenda'),
+            Cards(
+              imageName: 'maps',
+              name: 'Kaarten',
+              routeName: '/maps',
+            ),
+            Cards(
+              imageName: 'dairy',
+              name: 'Dagboek',
+              routeName: '/dairy',
+            ),
+            Cards(
+              imageName: 'news',
+              name: 'Nieuws',
+              routeName: '/news',
+            ),
+            Cards(
+              imageName: 'calendar',
+              name: 'Agenda',
+              routeName: '/calendar',
+            ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildCard('drawing', 'Tekenen'),
-            buildCard('settings', 'Instellingen'),
-            buildCard('user', 'Gebruiker'),
-            buildCard('symbols', 'Symbolenkaart'),
+            Cards(
+              imageName: 'drawing',
+              name: 'Tekenen',
+              routeName: '/drawing',
+            ),
+            Cards(
+              imageName: 'settings',
+              name: 'Instellingen',
+              routeName: '/settings',
+            ),
+            Cards(
+              imageName: 'user',
+              name: 'Gebruiker',
+              routeName: '/user',
+            ),
+            Cards(
+              imageName: 'symbols',
+              name: 'Symbolenkaart',
+              routeName: '/symbols',
+            ),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            buildCard('camera', 'Camera'),
-            buildCard('photo', 'Foto\'s'),
-            buildCard('videocall', 'Video bellen'),
-            buildCard('socialmedia', 'Sociale media'),
+            Cards(
+              imageName: 'camera',
+              name: 'Camera',
+              routeName: '/camera',
+            ),
+            Cards(
+              imageName: 'photo',
+              name: 'Foto\'s',
+              routeName: '/photo',
+            ),
+            Cards(
+              imageName: 'videocall',
+              name: 'Video bellen',
+              routeName: '/video',
+            ),
+            Cards(
+              imageName: 'socialmedia',
+              name: 'Sociale media',
+              routeName: '/social',
+            ),
           ],
         )
       ],
