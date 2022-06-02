@@ -1,3 +1,15 @@
+import 'package:communicatiehelper/screens/calendar.dart';
+import 'package:communicatiehelper/screens/camera.dart';
+import 'package:communicatiehelper/screens/dairy.dart';
+import 'package:communicatiehelper/screens/drawing.dart';
+import 'package:communicatiehelper/screens/maps.dart';
+import 'package:communicatiehelper/screens/news.dart';
+import 'package:communicatiehelper/screens/photo.dart';
+import 'package:communicatiehelper/screens/settings.dart';
+import 'package:communicatiehelper/screens/social.dart';
+import 'package:communicatiehelper/screens/symbols.dart';
+import 'package:communicatiehelper/screens/user.dart';
+import 'package:communicatiehelper/screens/video.dart';
 import 'package:flutter/material.dart';
 
 import '../build_card.dart';
@@ -21,22 +33,22 @@ class _HomePageState extends State<HomePage> {
             Cards(
               imageName: 'maps',
               name: 'Kaarten',
-              routeName: '/maps',
+              routeName: MapsPage.id,
             ),
             Cards(
               imageName: 'dairy',
               name: 'Dagboek',
-              routeName: '/dairy',
+              routeName: DairyPage.id,
             ),
             Cards(
               imageName: 'news',
               name: 'Nieuws',
-              routeName: '/news',
+              routeName: NewsPage.id,
             ),
             Cards(
               imageName: 'calendar',
               name: 'Agenda',
-              routeName: '/calendar',
+              routeName: CalendarPage.id,
             ),
           ],
         ),
@@ -46,22 +58,22 @@ class _HomePageState extends State<HomePage> {
             Cards(
               imageName: 'drawing',
               name: 'Tekenen',
-              routeName: '/drawing',
+              routeName: DrawingPage.id,
             ),
             Cards(
               imageName: 'settings',
               name: 'Instellingen',
-              routeName: '/settings',
+              routeName: SettingsPage.id,
             ),
             Cards(
               imageName: 'user',
               name: 'Gebruiker',
-              routeName: '/user',
+              routeName: UserssPage.id,
             ),
             Cards(
               imageName: 'symbols',
               name: 'Symbolenkaart',
-              routeName: '/symbols',
+              routeName: SymbolsPage.id,
             ),
           ],
         ),
@@ -71,22 +83,22 @@ class _HomePageState extends State<HomePage> {
             Cards(
               imageName: 'camera',
               name: 'Camera',
-              routeName: '/camera',
+              routeName: CameraPage.id,
             ),
             Cards(
               imageName: 'photo',
               name: 'Foto\'s',
-              routeName: '/photo',
+              routeName: PhotosPage.id,
             ),
             Cards(
               imageName: 'videocall',
               name: 'Video bellen',
-              routeName: '/video',
+              routeName: VideosPage.id,
             ),
             Cards(
               imageName: 'socialmedia',
               name: 'Sociale media',
-              routeName: '/social',
+              routeName: SocialsPage.id,
             ),
           ],
         )
