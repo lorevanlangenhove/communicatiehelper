@@ -1,3 +1,4 @@
+import 'package:communicatiehelper/screens/add_dairy_fragment.dart';
 import 'package:communicatiehelper/screens/calendar.dart';
 import 'package:communicatiehelper/screens/camera.dart';
 import 'package:communicatiehelper/screens/dairy.dart';
@@ -35,6 +36,7 @@ class Home extends StatelessWidget {
         PhotosPage.id: (context) => PhotosPage(),
         VideosPage.id: (context) => VideosPage(),
         SocialsPage.id: (context) => SocialsPage(),
+        AddDairyFragment.id: (context) => AddDairyFragment(),
       },
     );
   }

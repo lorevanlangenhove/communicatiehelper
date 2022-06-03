@@ -1,3 +1,4 @@
+import 'package:communicatiehelper/screens/add_dairy_fragment.dart';
 import 'package:flutter/material.dart';
 
 class DairyPage extends StatelessWidget {
@@ -6,8 +7,15 @@ class DairyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(child: Text('DAGBOEK')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AddDairyFragment.id);
+        },
+        backgroundColor: Colors.black,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }
