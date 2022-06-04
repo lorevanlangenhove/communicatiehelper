@@ -21,4 +21,24 @@ class AppDb extends _$AppDb {
 
   @override
   int get schemaVersion => 1;
+
+  Future<List<DairyData>> getAllFragments() async {
+    return await select(dairy).get();
+  }
+
+  Future<DairyData> getFragment(int id) async {
+    return await (select(dairy)..where((tbl) => tbl.id.equals(id))).getSingle();
+  }
+
+  Future<bool> updateFragment(DairyCompanion entity) async {
+    return await update(dairy).replace(entity);
+  }
+
+  Future<int> insertFragment(DairyCompanion entity) async {
+    return await into(dairy).insert(entity);
+  }
+
+  Future<int> deleteFragment(int id) async {
+    return await (delete(dairy)..where((tbl) => tbl.id.equals(id))).go();
+  }
 }

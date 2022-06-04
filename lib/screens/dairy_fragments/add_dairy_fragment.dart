@@ -1,5 +1,7 @@
+import 'package:communicatiehelper/components/custom_text_form_field.dart';
+import 'package:communicatiehelper/database/db.dart';
 import 'package:flutter/material.dart';
-import 'package:communicatiehelper/constants.dart';
+import 'package:drift/drift.dart' as drift;
 
 class AddDairyFragment extends StatefulWidget {
   static String id = 'add_dairy_fragment_page';
@@ -9,22 +11,67 @@ class AddDairyFragment extends StatefulWidget {
 }
 
 class _AddDairyFragmentState extends State<AddDairyFragment> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  late AppDb _db;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = AppDb();
+  }
+
+  @override
+  void dispose() {
+    _db.close();
+    _descriptionController.dispose();
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  void addDairyFragment() {
+    final entity = DairyCompanion(
+      title: drift.Value(_titleController.text),
+      description: drift.Value(_descriptionController.text),
+      created: drift.Value(DateTime.now()),
+    );
+    _db.insertFragment(entity).then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.green,
+              content: const Text(
+                'Nieuw dagboek fragment is opgeslagen',
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: const Text(
+                    'Sluit',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            decoration: kTextFieldDecoration.copyWith(hintText: 'Titel'),
-          ),
+          CustomTextFormField(
+              controller: _titleController, inputLabel: 'Titel'),
           const SizedBox(
             height: 8.0,
           ),
-          TextField(
-            decoration: kTextFieldDecoration.copyWith(
-                hintText: 'Wat is er vandaag gebeurd?'),
-          ),
+          CustomTextFormField(
+              controller: _descriptionController, inputLabel: 'Tekst'),
           const SizedBox(
             height: 50.0,
           ),
@@ -69,18 +116,18 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
-                        side: BorderSide(color: Colors.green),
+                        side: const BorderSide(color: Colors.green),
                       ),
                     ),
                   ),
                   onPressed: () {
-                    //alert
+                    addDairyFragment();
                   },
-                  label: Text(
+                  label: const Text(
                     'Opslaan',
                     style: TextStyle(fontSize: 20.0, color: Colors.black),
                   ),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.check,
                     color: Colors.black,
                   ),

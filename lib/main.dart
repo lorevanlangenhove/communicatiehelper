@@ -1,4 +1,4 @@
-import 'package:communicatiehelper/screens/add_dairy_fragment.dart';
+import 'package:communicatiehelper/screens/dairy_fragments/add_dairy_fragment.dart';
 import 'package:communicatiehelper/screens/calendar.dart';
 import 'package:communicatiehelper/screens/camera.dart';
 import 'package:communicatiehelper/screens/dairy.dart';
