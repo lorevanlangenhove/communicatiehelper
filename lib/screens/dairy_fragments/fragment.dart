@@ -1,5 +1,6 @@
 import 'package:communicatiehelper/database/db.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Fragment extends StatefulWidget {
   final int id;
@@ -31,6 +32,31 @@ class _FragmentState extends State<Fragment> {
     super.dispose();
   }
 
+  void deleteFragment() {
+    Provider.of<AppDb>(context, listen: false).deleteFragment(widget.id).then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.red,
+              content: const Text(
+                'Dagboek fragment is verwijdert',
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: const Text(
+                    'Sluit',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+  }
+
   Future<void> getFragment() async {
     _dairyData = await _db.getFragment(widget.id);
     _titleController.text = _dairyData.title;
@@ -39,6 +65,7 @@ class _FragmentState extends State<Fragment> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('BuildContext');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Een dagboek fragment'),
@@ -46,13 +73,14 @@ class _FragmentState extends State<Fragment> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/update_fragment');
+              Navigator.pushNamed(context, '/update_fragment',
+                  arguments: widget.id);
             },
             icon: const Icon(Icons.edit),
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/update_fragment');
+              deleteFragment();
             },
             icon: const Icon(Icons.delete),
           ),
@@ -63,7 +91,7 @@ class _FragmentState extends State<Fragment> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
           Text(
-            'TEST1',
+            'TEST',
             style: TextStyle(fontWeight: FontWeight.w900, fontSize: 40.0),
           ),
           SizedBox(

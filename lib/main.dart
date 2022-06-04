@@ -1,13 +1,20 @@
 import 'package:communicatiehelper/database/db.dart';
+import 'package:communicatiehelper/notifier.dart';
 import 'package:communicatiehelper/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(Provider(
-    create: (context) => AppDb(),
+  runApp(MultiProvider(
+    providers: [
+      Provider.value(value: AppDb()),
+      ChangeNotifierProxyProvider<AppDb, FragmentChangeNotifier>(
+          create: (context) => FragmentChangeNotifier(),
+          update: (context, db, notifier) => notifier!
+            ..initAppDb(db)
+            ..getFragments()),
+    ],
     child: Home(),
-    dispose: (context, AppDb db) => db.close(),
   ));
 }
 

@@ -74,45 +74,12 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
     _descriptionController.text = _dairyData.description;
   }
 
-  void deleteFragment() {
-    Provider.of<AppDb>(context, listen: false).deleteFragment(widget.id).then(
-          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
-            MaterialBanner(
-              backgroundColor: Colors.red,
-              content: const Text(
-                'Dagboek fragment is verwijdert',
-                style: TextStyle(color: Colors.black),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                  },
-                  child: const Text(
-                    'Sluit',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wijzig dagboek fragment'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              deleteFragment();
-            },
-            icon: const Icon(Icons.delete),
-          ),
-        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
