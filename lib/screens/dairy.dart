@@ -1,34 +1,33 @@
 import 'package:communicatiehelper/database/db.dart';
-import 'package:communicatiehelper/screens/dairy_fragments/add_dairy_fragment.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DairyPage extends StatefulWidget {
-  static String id = 'dairy_page';
-
   @override
   State<DairyPage> createState() => _DairyPageState();
 }
 
 class _DairyPageState extends State<DairyPage> {
-  late AppDb _db;
   @override
   void initState() {
     super.initState();
-    _db = AppDb();
   }
 
   @override
   void dispose() {
-    _db.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Alle dagboek fragmenten'),
+        centerTitle: true,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, AddDairyFragment.id);
+          Navigator.pushNamed(context, '/add_fragment');
         },
         backgroundColor: Colors.black,
         child: const Icon(
@@ -37,7 +36,7 @@ class _DairyPageState extends State<DairyPage> {
         ),
       ),
       body: FutureBuilder<List<DairyData>>(
-        future: _db.getAllFragments(),
+        future: Provider.of<AppDb>(context, listen: false).getAllFragments(),
         builder: (context, snapshot) {
           final List<DairyData>? fragments = snapshot.data;
           if (snapshot.connectionState != ConnectionState.done) {
@@ -57,7 +56,10 @@ class _DairyPageState extends State<DairyPage> {
                 itemBuilder: (context, index) {
                   final fragment = fragments[index];
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/update_fragment',
+                          arguments: fragment.id);
+                    },
                     child: Card(
                       shape: const RoundedRectangleBorder(
                         side: BorderSide(

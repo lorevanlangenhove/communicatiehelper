@@ -4,19 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:provider/provider.dart';
 
-class AddDairyFragment extends StatefulWidget {
+class UpdateDairyFragment extends StatefulWidget {
+  final int id;
+
+  const UpdateDairyFragment({Key? key, required this.id}) : super(key: key);
+
   @override
-  State<AddDairyFragment> createState() => _AddDairyFragmentState();
+  State<UpdateDairyFragment> createState() => _UpdateDairyFragmentState();
 }
 
-class _AddDairyFragmentState extends State<AddDairyFragment> {
+class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  late DairyData _dairyData;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    getFragment();
   }
 
   @override
@@ -26,21 +32,22 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
     super.dispose();
   }
 
-  void addDairyFragment() {
+  void updateDairyFragment() {
     final isValid = _formKey.currentState?.validate();
 
     if (isValid != null && isValid) {
       final entity = DairyCompanion(
+        id: drift.Value(widget.id),
         title: drift.Value(_titleController.text),
         description: drift.Value(_descriptionController.text),
         created: drift.Value(DateTime.now()),
       );
-      Provider.of<AppDb>(context, listen: false).insertFragment(entity).then(
+      Provider.of<AppDb>(context, listen: false).updateFragment(entity).then(
             (value) => ScaffoldMessenger.of(context).showMaterialBanner(
               MaterialBanner(
                 backgroundColor: Colors.green,
                 content: const Text(
-                  'Nieuw dagboek fragment is opgeslagen',
+                  'Dagboek fragment is gewijzigd',
                   style: TextStyle(color: Colors.black),
                 ),
                 actions: [
@@ -60,17 +67,58 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
     }
   }
 
+  Future<void> getFragment() async {
+    _dairyData =
+        await Provider.of<AppDb>(context, listen: false).getFragment(widget.id);
+    _titleController.text = _dairyData.title;
+    _descriptionController.text = _dairyData.description;
+  }
+
+  void deleteFragment() {
+    Provider.of<AppDb>(context, listen: false).deleteFragment(widget.id).then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.red,
+              content: const Text(
+                'Dagboek fragment is verwijdert',
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: const Text(
+                    'Sluit',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nieuw dagboek fragment'),
+        title: const Text('Wijzig dagboek fragment'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              deleteFragment();
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Form(
+            key: _formKey,
             child: Column(
               children: [
                 CustomTextFormField(
@@ -80,12 +128,11 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
                 ),
                 CustomTextFormField(
                     controller: _descriptionController, inputLabel: 'Tekst'),
+                const SizedBox(
+                  height: 50.0,
+                ),
               ],
             ),
-            key: _formKey,
-          ),
-          const SizedBox(
-            height: 50.0,
           ),
           SizedBox(
             height: 50.0,
@@ -133,7 +180,7 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
                     ),
                   ),
                   onPressed: () {
-                    addDairyFragment();
+                    updateDairyFragment();
                   },
                   label: const Text(
                     'Opslaan',
