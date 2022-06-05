@@ -22,8 +22,8 @@ class AppDb extends _$AppDb {
   @override
   int get schemaVersion => 1;
 
-  Future<List<DairyData>> getAllFragments() async {
-    return await select(dairy).get();
+  Stream<List<DairyData>> getAllFragments() {
+    return select(dairy).watch();
   }
 
   Future<DairyData> getFragment(int id) async {

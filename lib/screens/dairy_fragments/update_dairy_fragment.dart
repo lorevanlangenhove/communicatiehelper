@@ -74,12 +74,70 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
     _descriptionController.text = _dairyData.description;
   }
 
+  void deleteFragment() {
+    Provider.of<AppDb>(context, listen: false).deleteFragment(widget.id).then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.red,
+              content: const Text(
+                'Dagboek fragment is verwijdert',
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: const Text(
+                    'Sluit',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+  }
+
+  void getAlert() {
+    setState(() {
+      TextButton(
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('AlertDialog Title'),
+            content: const Text('AlertDialog description'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        ),
+        child: const Text('Show Dialog'),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wijzig dagboek fragment'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              deleteFragment();
+            },
+            icon: const Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,21 +167,65 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
-                    side: const BorderSide(color: Colors.blue),
+                    side: const BorderSide(color: Colors.black),
                   ),
                 ),
-              ),
-              onPressed: () {
-                //alert
-              },
-              label: const Text(
-                'Voeg foto toe',
-                style: TextStyle(fontSize: 20.0),
               ),
               icon: const Icon(
                 Icons.add_a_photo,
                 color: Colors.black,
               ),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text(
+                    'Voeg foto toe',
+                  ),
+                  content: const Text('Ik wil: '),
+                  actions: <Widget>[
+                    TextButton.icon(
+                      icon: const Icon(
+                        Icons.photo,
+                        color: Colors.black,
+                      ),
+                      onPressed: () => Navigator.pushNamed(context, '/photo'),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            side: const BorderSide(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      label: const Text(
+                        'Naar foto\'s gaan',
+                        style: TextStyle(fontSize: 20.0, color: Colors.black),
+                      ),
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(
+                        Icons.camera_alt,
+                        color: Colors.black,
+                      ),
+                      onPressed: () => Navigator.pushNamed(context, '/camera'),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            side: const BorderSide(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      label: const Text(
+                        'Een foto nemen',
+                        style: TextStyle(color: Colors.black, fontSize: 20.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              label: const Text('Voeg foto toe',
+                  style: TextStyle(color: Colors.black)),
             ),
           ),
           const SizedBox(
@@ -192,3 +294,48 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
     );
   }
 }
+/*
+setState(() {
+Alert(
+context: context,
+type: AlertType.info,
+title: "Foto toevoegen",
+desc: "Ik wil: ",
+buttons: [
+DialogButton(
+child: const Text(
+"Naar foto's gaan",
+style: TextStyle(color: Colors.white, fontSize: 20),
+),
+onPressed: () => Navigator.pop(context),
+),
+DialogButton(
+child: const Text(
+"Een foto nemen",
+style: TextStyle(color: Colors.white, fontSize: 20),
+),
+onPressed: () => Navigator.pop(context),
+),
+],
+).show();
+});*/
+
+/*TextButton.icon(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    side: const BorderSide(color: Colors.blue),
+                  ),
+                ),
+              ),
+              onPressed: () {
+                getAlert();
+              },
+              label: const Text(
+                'Voeg foto toe',
+                style: TextStyle(fontSize: 20.0),
+              ),
+              icon: const Icon(
+                Icons.add_a_photo,
+                color: Colors.black,*/

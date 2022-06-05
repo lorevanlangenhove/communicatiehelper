@@ -23,11 +23,8 @@ class FragmentChangeNotifier extends ChangeNotifier {
   bool get deleted => _deleted;
 
   void getFragments() {
-    _appDb?.getAllFragments().then((value) {
-      _fragmentsList = value;
-      notifyListeners();
-    }).onError((error, stackTrace) {
-      _error = error.toString();
+    _appDb?.getAllFragments().listen((event) {
+      _fragmentsList = event;
       notifyListeners();
     });
   }
