@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:communicatiehelper/components/custom_text_form_field.dart';
 import 'package:communicatiehelper/database/db.dart';
 import 'package:flutter/material.dart';
@@ -17,14 +16,14 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  File? image;
+  File? img;
 
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      setState(() => img = imageTemp);
     } on PlatformException catch (e) {
       print('Niet gelukt om foto te kiezen: $e');
     }
@@ -35,7 +34,7 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      setState(() => img = imageTemp);
     } on PlatformException catch (e) {
       print('Niet gelukt om foto te nemen: $e');
     }
@@ -235,8 +234,8 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
             height: 20,
             width: 20,
           ),
-          image != null
-              ? Image.file(image!)
+          img != null
+              ? Image.file(img!)
               : const Text('Er is geen foto geselecteerd'),
         ],
       ),
