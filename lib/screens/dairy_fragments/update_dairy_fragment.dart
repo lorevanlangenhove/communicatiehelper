@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:communicatiehelper/components/custom_text_form_field.dart';
 import 'package:communicatiehelper/database/db.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class UpdateDairyFragment extends StatefulWidget {
@@ -18,6 +22,29 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
   final TextEditingController _descriptionController = TextEditingController();
   late DairyData _dairyData;
   final _formKey = GlobalKey<FormState>();
+  File? image;
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Niet gelukt om foto te kiezen: $e');
+    }
+  }
+
+  Future takePhoto() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Niet gelukt om foto te maken: $e');
+    }
+  }
 
   @override
   void initState() {
@@ -99,31 +126,6 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
         );
   }
 
-  void getAlert() {
-    setState(() {
-      TextButton(
-        onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('AlertDialog Title'),
-            content: const Text('AlertDialog description'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        ),
-        child: const Text('Show Dialog'),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,74 +161,61 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
               ],
             ),
           ),
-          SizedBox(
-            height: 50.0,
-            width: 200.0,
-            child: TextButton.icon(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: const BorderSide(color: Colors.black),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 50.0,
+                width: 200.0,
+                child: TextButton.icon(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        side: const BorderSide(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    pickImage();
+                  },
+                  label: const Text(
+                    'Kies een foto',
+                    style: TextStyle(fontSize: 20.0, color: Colors.black),
+                  ),
+                  icon: const Icon(
+                    Icons.photo,
+                    color: Colors.black,
                   ),
                 ),
               ),
-              icon: const Icon(
-                Icons.add_a_photo,
-                color: Colors.black,
-              ),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text(
-                    'Voeg foto toe',
+              SizedBox(
+                height: 50.0,
+                width: 200.0,
+                child: TextButton.icon(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        side: const BorderSide(color: Colors.black),
+                      ),
+                    ),
                   ),
-                  content: const Text('Ik wil: '),
-                  actions: <Widget>[
-                    TextButton.icon(
-                      icon: const Icon(
-                        Icons.photo,
-                        color: Colors.black,
-                      ),
-                      onPressed: () => Navigator.pushNamed(context, '/photo'),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: const BorderSide(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      label: const Text(
-                        'Naar foto\'s gaan',
-                        style: TextStyle(fontSize: 20.0, color: Colors.black),
-                      ),
-                    ),
-                    TextButton.icon(
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        color: Colors.black,
-                      ),
-                      onPressed: () => Navigator.pushNamed(context, '/camera'),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: const BorderSide(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      label: const Text(
-                        'Een foto nemen',
-                        style: TextStyle(color: Colors.black, fontSize: 20.0),
-                      ),
-                    ),
-                  ],
+                  onPressed: () {
+                    takePhoto();
+                  },
+                  label: const Text(
+                    'Neem een foto',
+                    style: TextStyle(fontSize: 20.0, color: Colors.black),
+                  ),
+                  icon: const Icon(
+                    Icons.camera_alt,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-              label: const Text('Voeg foto toe',
-                  style: TextStyle(color: Colors.black)),
-            ),
+            ],
           ),
           const SizedBox(
             height: 50.0,
@@ -289,53 +278,15 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
               ),
             ],
           ),
+          const SizedBox(
+            height: 20,
+            width: 20,
+          ),
+          image != null
+              ? Image.file(image!)
+              : const Text('Er is geen foto geselecteerd'),
         ],
       ),
     );
   }
 }
-/*
-setState(() {
-Alert(
-context: context,
-type: AlertType.info,
-title: "Foto toevoegen",
-desc: "Ik wil: ",
-buttons: [
-DialogButton(
-child: const Text(
-"Naar foto's gaan",
-style: TextStyle(color: Colors.white, fontSize: 20),
-),
-onPressed: () => Navigator.pop(context),
-),
-DialogButton(
-child: const Text(
-"Een foto nemen",
-style: TextStyle(color: Colors.white, fontSize: 20),
-),
-onPressed: () => Navigator.pop(context),
-),
-],
-).show();
-});*/
-
-/*TextButton.icon(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: const BorderSide(color: Colors.blue),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                getAlert();
-              },
-              label: const Text(
-                'Voeg foto toe',
-                style: TextStyle(fontSize: 20.0),
-              ),
-              icon: const Icon(
-                Icons.add_a_photo,
-                color: Colors.black,*/

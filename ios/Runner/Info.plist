@@ -4,6 +4,12 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Foto toegangwaarschuwing</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera toegangwaarschuwing</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microfoon toegangwaarschuwing</string>
 	<key>CFBundleDisplayName</key>
 	<string>Communicatiehelper</string>
 	<key>CFBundleExecutable</key>
@@ -43,5 +49,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>
