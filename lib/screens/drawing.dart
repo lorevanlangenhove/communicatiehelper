@@ -1,9 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whiteboard/whiteboard.dart';
-import 'package:file_saver/file_saver.dart';
 
 class DrawingPage extends StatefulWidget {
   @override
@@ -12,12 +9,15 @@ class DrawingPage extends StatefulWidget {
 
 class _DrawingPageState extends State<DrawingPage> {
   WhiteBoardController controller = WhiteBoardController();
+  WhiteBoard whiteBoard = WhiteBoard(
+    strokeColor: Colors.black,
+  );
 
-  WhiteBoard changeColor(Color color) {
+  /* WhiteBoard changeColor(Color color) {
     return WhiteBoard(
       strokeColor: color,
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +25,6 @@ class _DrawingPageState extends State<DrawingPage> {
       appBar: AppBar(
         title: const Text('Tekenen'),
         actions: [
-          IconButton(
-            onPressed: () {
-              controller.clear();
-            },
-            icon: const Icon(Icons.delete),
-          ),
-          IconButton(
-            onPressed: () {
-              controller.convertToImage();
-            },
-            icon: const Icon(Icons.save),
-          ),
           IconButton(
             onPressed: () {
               controller.redo();
@@ -49,6 +37,18 @@ class _DrawingPageState extends State<DrawingPage> {
             },
             icon: const Icon(Icons.undo),
           ),
+          IconButton(
+            onPressed: () {
+              controller.convertToImage();
+            },
+            icon: const Icon(Icons.save),
+          ),
+          IconButton(
+            onPressed: () {
+              controller.clear();
+            },
+            icon: const Icon(Icons.delete),
+          ),
         ],
       ),
       body: SizedBox(
@@ -57,20 +57,12 @@ class _DrawingPageState extends State<DrawingPage> {
         child: Row(
           children: [
             Expanded(
-              child: WhiteBoard(
-                controller: controller,
-                onConvertImage: (Uint8List imageList) async {
-                  await FileSaver.instance
-                      .saveAs('Tekening', imageList, 'png', MimeType.PNG);
-                },
-              ),
+              child: whiteBoard,
             ),
             Column(
               children: [
                 IconButton(
-                  onPressed: () {
-                    changeColor(Colors.black);
-                  },
+                  onPressed: () {},
                   icon: const Icon(
                     Icons.circle,
                     color: Colors.black,
@@ -78,7 +70,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    changeColor(Colors.blue);
+                    whiteBoard.strokeColor.blue;
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -87,7 +79,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    changeColor(Colors.green);
+                    whiteBoard.strokeColor.green;
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -96,20 +88,11 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    changeColor(Colors.red);
+                    whiteBoard.strokeColor.red;
                   },
                   icon: const Icon(
                     Icons.circle,
                     color: Colors.red,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    controller.clear();
-                  },
-                  icon: const Icon(
-                    CupertinoIcons.delete,
-                    color: Colors.black,
                   ),
                 ),
               ],
