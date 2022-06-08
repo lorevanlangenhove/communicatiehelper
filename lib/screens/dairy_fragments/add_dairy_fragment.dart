@@ -234,9 +234,13 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
             height: 20,
             width: 20,
           ),
-          img != null
-              ? Image.file(img!)
-              : const Text('Er is geen foto geselecteerd'),
+          img == null
+              ? const Text('Er is geen foto geselecteerd')
+              : Image.file(
+                  img!,
+                  height: 200,
+                  width: 200,
+                ),
         ],
       ),
     );

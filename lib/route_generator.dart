@@ -44,7 +44,7 @@ class RouteGenerator {
         return _errorRoute();
       case '/drawing':
         return MaterialPageRoute(builder: (_) => DrawingPage());
-      case 'maps':
+      case '/maps':
         return MaterialPageRoute(builder: (_) => MapsPage());
       case '/news':
         return MaterialPageRoute(builder: (_) => NewsPage());

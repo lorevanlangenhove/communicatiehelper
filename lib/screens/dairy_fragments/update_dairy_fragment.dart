@@ -22,14 +22,14 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
   final TextEditingController _descriptionController = TextEditingController();
   late DairyData _dairyData;
   final _formKey = GlobalKey<FormState>();
-  File? image;
+  File? img;
 
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      setState(() => img = imageTemp);
     } on PlatformException catch (e) {
       print('Niet gelukt om foto te kiezen: $e');
     }
@@ -40,7 +40,7 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
       final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
       final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      setState(() => img = imageTemp);
     } on PlatformException catch (e) {
       print('Niet gelukt om foto te maken: $e');
     }
@@ -282,9 +282,13 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
             height: 20,
             width: 20,
           ),
-          image != null
-              ? Image.file(image!)
-              : const Text('Er is geen foto geselecteerd'),
+          img == null
+              ? const Text('Er is geen foto geselecteerd')
+              : Image.file(
+                  img!,
+                  height: 200,
+                  width: 200,
+                ),
         ],
       ),
     );
