@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whiteboard/whiteboard.dart';
 
@@ -9,21 +8,21 @@ class DrawingPage extends StatefulWidget {
 
 class _DrawingPageState extends State<DrawingPage> {
   WhiteBoardController controller = WhiteBoardController();
-  WhiteBoard whiteBoard = WhiteBoard(
+  WhiteBoard whiteBoard = const WhiteBoard(
     strokeColor: Colors.black,
   );
 
-  /* WhiteBoard changeColor(Color color) {
-    return WhiteBoard(
-      strokeColor: color,
-    );
-  }*/
+  @override
+  initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tekenen'),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {

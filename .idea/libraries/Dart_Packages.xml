@@ -492,6 +492,13 @@
             </list>
           </value>
         </entry>
+        <entry key="photo_gallery">
+          <value>
+            <list>
+              <option value="$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/photo_gallery-1.1.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="platform">
           <value>
             <list>
@@ -681,6 +688,34 @@
             </list>
           </value>
         </entry>
+        <entry key="webview_flutter">
+          <value>
+            <list>
+              <option value="$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-3.0.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="webview_flutter_android">
+          <value>
+            <list>
+              <option value="$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_android-2.8.11/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="webview_flutter_platform_interface">
+          <value>
+            <list>
+              <option value="$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_platform_interface-1.9.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="webview_flutter_wkwebview">
+          <value>
+            <list>
+              <option value="$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_wkwebview-2.8.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="whiteboard">
           <value>
             <list>
@@ -779,6 +814,7 @@
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.6/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.4/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.7/lib" />
+      <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/photo_gallery-1.1.1/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/pool-1.5.0/lib" />
@@ -805,6 +841,10 @@
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.2/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/watcher-1.0.1/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-2.2.0/lib" />
+      <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter-3.0.4/lib" />
+      <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_android-2.8.11/lib" />
+      <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_platform_interface-1.9.1/lib" />
+      <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/webview_flutter_wkwebview-2.8.1/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/whiteboard-0.0.1/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.5.2/lib" />
       <root url="file://$USER_HOME$/developer/flutter/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+1/lib" />

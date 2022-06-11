@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class VideosPage extends StatelessWidget {
-  static String id = 'video_page';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
