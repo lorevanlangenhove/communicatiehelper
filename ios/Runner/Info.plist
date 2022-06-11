@@ -10,6 +10,10 @@
 	<string>Camera toegangwaarschuwing</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Microfoon toegangwaarschuwing</string>
+	<key>NSCalendarsUsageDescription</key>
+    <string>INSERT_REASON_HERE</string>
+    <key>CFBundleLocalizations</key>
+    		<string>nl</string>
 	<key>CFBundleDisplayName</key>
 	<string>Communicatiehelper</string>
 	<key>CFBundleExecutable</key>

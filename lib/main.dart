@@ -22,6 +22,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      locale: Locale('nl'),
       color: Colors.white,
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,

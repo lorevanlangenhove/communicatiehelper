@@ -4,8 +4,9 @@ class CameraPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(child: Text('CAMERA')),
+      appBar: AppBar(
+        title: const Text('Camera'),
+        centerTitle: true,
       ),
     );
   }

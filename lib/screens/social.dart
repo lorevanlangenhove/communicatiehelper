@@ -4,8 +4,9 @@ class SocialsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(child: Text('SOCIALE MEDIA')),
+      appBar: AppBar(
+        title: const Text('Sociale media'),
+        centerTitle: true,
       ),
     );
   }

@@ -4,8 +4,9 @@ class PhotosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(child: Text('FOTO\'s')),
+      appBar: AppBar(
+        title: const Text('Foto\'s'),
+        centerTitle: true,
       ),
     );
   }
