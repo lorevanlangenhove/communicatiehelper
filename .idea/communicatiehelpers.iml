@@ -59,6 +59,12 @@
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/photo_gallery/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/photo_gallery/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/photo_gallery/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/add_2_calendar/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/add_2_calendar/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/add_2_calendar/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/add_2_calendar/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/add_2_calendar/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/add_2_calendar/example/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

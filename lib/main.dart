@@ -1,4 +1,5 @@
 import 'package:communicatiehelper/database/db.dart';
+import 'package:communicatiehelper/event_provider.dart';
 import 'package:communicatiehelper/notifier.dart';
 import 'package:communicatiehelper/route_generator.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ void main() {
           update: (context, db, notifier) => notifier!
             ..initAppDb(db)
             ..getFragments()),
+      ChangeNotifierProvider(create: (context) => EventProvider())
     ],
     child: Home(),
   ));

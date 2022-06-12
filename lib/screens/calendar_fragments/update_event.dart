@@ -5,15 +5,15 @@ import '../../event.dart';
 import 'package:communicatiehelper/components/custom_text_form_field.dart';
 import '../../event_provider.dart';
 
-class AddEvent extends StatefulWidget {
-  const AddEvent({Key? key, this.event}) : super(key: key);
+class UpdateEvent extends StatefulWidget {
+  const UpdateEvent({Key? key, this.event}) : super(key: key);
   final Event? event;
 
   @override
-  State<AddEvent> createState() => _AddEventState();
+  State<UpdateEvent> createState() => _UpdateEventState();
 }
 
-class _AddEventState extends State<AddEvent> {
+class _UpdateEventState extends State<UpdateEvent> {
   late DateTime fromDate;
   late DateTime toDate;
   final _formKey = GlobalKey<FormState>();
@@ -229,7 +229,6 @@ class _AddEventState extends State<AddEvent> {
                       ),
                       onPressed: () {
                         saveForm();
-                        Navigator.pop(context);
                       },
                       label: const Text(
                         'Opslaan',
