@@ -30,6 +30,7 @@ class CalendarPage extends StatelessWidget {
       body: SfCalendar(
         dataSource: EventDataSource(events),
         view: CalendarView.month,
+        firstDayOfWeek: 1,
         backgroundColor: Colors.white,
         initialSelectedDate: DateTime.now(),
         onLongPress: (details) {

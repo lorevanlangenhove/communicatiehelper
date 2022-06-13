@@ -35,6 +35,7 @@ class _TasksWidgetState extends State<TasksWidget> {
       ),
       child: SfCalendar(
         view: CalendarView.day,
+        timeZone: 'Romance Standard Time',
         dataSource: EventDataSource(provider.events),
         initialDisplayDate: provider.selectedDate,
         appointmentBuilder: appointmentBuilder,
