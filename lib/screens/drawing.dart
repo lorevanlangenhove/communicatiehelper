@@ -7,10 +7,14 @@ class DrawingPage extends StatefulWidget {
 }
 
 class _DrawingPageState extends State<DrawingPage> {
-  WhiteBoardController controller = WhiteBoardController();
+  late WhiteBoardController whiteBoardController;
   WhiteBoard whiteBoard = const WhiteBoard(
     strokeColor: Colors.black,
   );
+
+  void _whiteboardController(WhiteBoardController controller) {
+    whiteBoardController = controller;
+  }
 
   @override
   initState() {
@@ -26,25 +30,29 @@ class _DrawingPageState extends State<DrawingPage> {
         actions: [
           IconButton(
             onPressed: () {
-              controller.redo();
+              //_whiteboardController;
+              whiteBoardController.redo();
             },
             icon: const Icon(Icons.redo),
           ),
           IconButton(
             onPressed: () {
-              controller.undo();
+              _whiteboardController;
+              whiteBoardController.undo();
             },
             icon: const Icon(Icons.undo),
           ),
           IconButton(
             onPressed: () {
-              controller.convertToImage();
+              //_whiteboardController;
+              whiteBoardController.convertToImage();
             },
             icon: const Icon(Icons.save),
           ),
           IconButton(
             onPressed: () {
-              controller.clear();
+              //_whiteboardController;
+              whiteBoardController.clear();
             },
             icon: const Icon(Icons.delete),
           ),
@@ -56,7 +64,9 @@ class _DrawingPageState extends State<DrawingPage> {
         child: Row(
           children: [
             Expanded(
-              child: whiteBoard,
+              child: WhiteBoard(
+                controller: WhiteBoardController(),
+              ),
             ),
             Column(
               children: [

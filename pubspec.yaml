@@ -32,6 +32,11 @@ dependencies:
   intl: ^0.17.0
   syncfusion_localizations: ^20.1.59
   syncfusion_flutter_core: ^20.1.59
+  google_maps_flutter: ^2.1.7
+  geolocator: ^8.2.1
+  dio: ^4.0.6
+  flutter_polyline_points: ^1.0.0
+  location: ^4.4.0
 
 
 dev_dependencies:

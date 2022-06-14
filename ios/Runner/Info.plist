@@ -12,6 +12,10 @@
 	<string>Microfoon toegangwaarschuwing</string>
 	<key>NSCalendarsUsageDescription</key>
     <string>INSERT_REASON_HERE</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Toegang tot uw locatie.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Toegang tot uw locatie.</string>
     <key>CFBundleLocalizations</key>
     		<string>nl</string>
 	<key>CFBundleDisplayName</key>
