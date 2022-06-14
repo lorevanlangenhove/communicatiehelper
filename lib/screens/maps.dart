@@ -1,8 +1,9 @@
-import 'package:communicatiehelper/location.dart';
+import 'dart:async';
+import 'package:communicatiehelper/screens/maps_fragment/application_block.dart';
+import 'package:communicatiehelper/screens/maps_fragment/places_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class MapsPage extends StatefulWidget {
   @override
@@ -10,56 +11,117 @@ class MapsPage extends StatefulWidget {
 }
 
 class _MapsPageState extends State<MapsPage> {
-  MyLocation myLocation = MyLocation();
-  var currentLatLng;
-  late GoogleMapController mapController;
-  Location location = Location();
-  var latitude;
-  var longitude;
-  late LocationData _locationData;
+  final Completer<GoogleMapController> _mapController = Completer();
+  TextEditingController _searchController = TextEditingController();
 
-  get() async {
-    location.requestPermission();
-    _locationData = await location.getLocation();
-    latitude = _locationData.latitude;
-    longitude = _locationData.longitude;
+  Set<Marker> _markers = Set<Marker>();
+  Set<Polygon> _polygons = Set<Polygon>();
+  List<LatLng> polygonLatLngs = <LatLng>[];
+  int _polygonIdCounter = 1;
+
+  void _setMarker(LatLng point) {
     setState(() {
-      currentLatLng = LatLng(latitude, longitude);
-      print(currentLatLng);
+      _markers.add(Marker(
+        markerId: MarkerId('Marker'),
+        position: point,
+        icon: BitmapDescriptor.defaultMarker,
+      ));
     });
   }
 
-  @override
-  initState() {
-    super.initState();
-    myLocation.determinePosition();
-    get();
+  Future<void> _goToPlace(Map<String, dynamic> place) async {
+    final double lat = place['geometry']['location']['lat'];
+    final double lng = place['geometry']['location']['lng'];
+
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(lat, lng), zoom: 12),
+      ),
+    );
+    _setMarker(LatLng(lat, lng));
+  }
+
+  void _setPolygon() {
+    final String polygonIdVal = 'polygon_$_polygonIdCounter';
+    _polygonIdCounter++;
+
+    _polygons.add(
+      Polygon(
+        polygonId: PolygonId(polygonIdVal),
+        points: polygonLatLngs,
+        strokeColor: Colors.transparent,
+        strokeWidth: 2,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final applicationBlock = Provider.of<ApplicationBlock>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kaarten'),
         centerTitle: true,
       ),
-      body: ListView(
-        children: [
-          TextField(
-            decoration: InputDecoration(hintText: 'Zoek locatie'),
-          ),
-          currentLatLng == null
-              ? const Center(child: CircularProgressIndicator())
-              : Container(
-                  height: 700.0,
+      body: (applicationBlock.currentLocation == null)
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _searchController,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: const InputDecoration(
+                          hintText: 'Zoek een plaats',
+                        ),
+                        onChanged: (value) {
+                          print(value);
+                        },
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () async {
+                          var place = await PlaceService()
+                              .getPlace(_searchController.text);
+                          _goToPlace(place);
+                        },
+                        icon: const Icon(Icons.search))
+                  ],
+                ),
+                Expanded(
                   child: GoogleMap(
-                    myLocationEnabled: true,
-                    initialCameraPosition:
-                        CameraPosition(target: currentLatLng, zoom: 15.0),
+                    mapType: MapType.normal,
+                    markers: {
+                      Marker(
+                          markerId: const MarkerId('Thuis'),
+                          infoWindow: const InfoWindow(title: 'Thuis'),
+                          icon: BitmapDescriptor.defaultMarker,
+                          position: LatLng(
+                              applicationBlock.currentLocation.latitude,
+                              applicationBlock.currentLocation.longitude))
+                    },
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                            applicationBlock.currentLocation.latitude,
+                            applicationBlock.currentLocation.longitude),
+                        zoom: 15),
+                    onMapCreated: (GoogleMapController controller) {
+                      _mapController.complete(controller);
+                    },
+                    onTap: (point) {
+                      setState(() {
+                        polygonLatLngs.add(point);
+                        _setPolygon();
+                      });
+                    },
                   ),
                 ),
-        ],
-      ),
+              ],
+            ),
     );
   }
 }
