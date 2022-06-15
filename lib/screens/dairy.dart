@@ -1,5 +1,6 @@
 import 'package:communicatiehelper/notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class DairyPage extends StatefulWidget {
@@ -42,6 +43,7 @@ class _DairyPageState extends State<DairyPage> {
         itemCount: fragments.length,
         itemBuilder: (context, index) {
           final fragment = reversed[index];
+          var formatted = DateFormat("dd-MM-yyyy").format(fragment.created);
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/update_fragment',
@@ -67,7 +69,7 @@ class _DairyPageState extends State<DairyPage> {
                       fragment.description.toString(),
                       style: const TextStyle(fontSize: 20),
                     ),
-                    Text(fragment.created.toString().substring(0, 11)),
+                    Text(formatted),
                   ],
                 ),
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import 'database/db.dart';
 
 class FragmentChangeNotifier extends ChangeNotifier {

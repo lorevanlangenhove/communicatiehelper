@@ -28,6 +28,11 @@ class CalendarPage extends StatelessWidget {
         ),
       ),
       body: SfCalendar(
+        allowedViews: const [
+          CalendarView.day,
+          CalendarView.week,
+          CalendarView.month
+        ],
         dataSource: EventDataSource(events),
         view: CalendarView.month,
         firstDayOfWeek: 1,

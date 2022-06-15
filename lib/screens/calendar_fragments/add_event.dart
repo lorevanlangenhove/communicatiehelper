@@ -3,7 +3,7 @@ import 'package:communicatiehelper/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../components/custom_text_form_field.dart';
-import '../../event.dart';
+import '../../database/event.dart';
 import '../../event_provider.dart';
 
 class AddEvent extends StatefulWidget {

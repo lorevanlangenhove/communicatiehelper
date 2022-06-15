@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-
-import 'event.dart';
+import 'database/event.dart';
 
 class EventProvider extends ChangeNotifier {
   final List<Event> _events = [];
