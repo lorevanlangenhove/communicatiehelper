@@ -17,7 +17,13 @@ class Cards extends StatelessWidget {
         child: InkWell(
           splashColor: Colors.blue,
           child: Column(
-            children: [Image.asset('images/$imageName.png'), Text(name)],
+            children: [
+              Image.asset('images/$imageName.png'),
+              Text(
+                name,
+                style: TextStyle(fontSize: 20),
+              )
+            ],
           ),
         ),
       ),

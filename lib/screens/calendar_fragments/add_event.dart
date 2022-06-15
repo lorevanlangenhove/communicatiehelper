@@ -1,8 +1,9 @@
+import 'package:communicatiehelper/components/custom_multiline.dart';
 import 'package:communicatiehelper/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../components/custom_text_form_field.dart';
 import '../../event.dart';
-import 'package:communicatiehelper/components/custom_text_form_field.dart';
 import '../../event_provider.dart';
 
 class AddEvent extends StatefulWidget {
@@ -17,7 +18,10 @@ class _AddEventState extends State<AddEvent> {
   late DateTime fromDate;
   late DateTime toDate;
   final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
   final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  bool value = false;
 
   @override
   void initState() {
@@ -28,6 +32,7 @@ class _AddEventState extends State<AddEvent> {
     } else {
       final event = widget.event!;
       _titleController.text = event.title;
+      _descriptionController.text = event.description;
       fromDate = event.from;
       toDate = event.to;
     }
@@ -37,6 +42,7 @@ class _AddEventState extends State<AddEvent> {
   void dispose() {
     super.dispose();
     _titleController.dispose();
+    _descriptionController.dispose();
   }
 
   Widget buildDateTimePickers() {
@@ -172,10 +178,12 @@ class _AddEventState extends State<AddEvent> {
 
   Future saveForm() async {
     final isValid = _formKey.currentState!.validate();
-    if (isValid) {
+    final isValid1 = _formKey1.currentState!.validate();
+
+    if (isValid && isValid1) {
       final event = Event(
         title: _titleController.text,
-        description: 'Description',
+        description: _descriptionController.text,
         from: fromDate,
         to: toDate,
       );
@@ -200,77 +208,83 @@ class _AddEventState extends State<AddEvent> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomTextFormField(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Form(
+              child: CustomTextFormField(
                   controller: _titleController, inputLabel: 'Titel'),
-              const SizedBox(height: 12),
-              buildDateTimePickers(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 50.0,
-                    width: 200.0,
-                    child: TextButton.icon(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.green),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: const BorderSide(color: Colors.green),
-                          ),
+              key: _formKey,
+            ),
+            const SizedBox(height: 12),
+            CustomMultiline(
+                controller: _descriptionController, inputLabel: 'Beschrijving'),
+            const SizedBox(height: 20),
+            Form(
+              child: buildDateTimePickers(),
+              key: _formKey1,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 50.0,
+                  width: 200.0,
+                  child: TextButton.icon(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: const BorderSide(color: Colors.green),
                         ),
                       ),
-                      onPressed: () {
-                        saveForm();
-                        Navigator.pop(context);
-                      },
-                      label: const Text(
-                        'Opslaan',
-                        style: TextStyle(fontSize: 20.0, color: Colors.black),
-                      ),
-                      icon: const Icon(
-                        Icons.check,
-                        color: Colors.black,
-                      ),
+                    ),
+                    onPressed: () {
+                      saveForm();
+                      Navigator.pop(context);
+                    },
+                    label: const Text(
+                      'Opslaan',
+                      style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    ),
+                    icon: const Icon(
+                      Icons.check,
+                      color: Colors.black,
                     ),
                   ),
-                  SizedBox(
-                    height: 50.0,
-                    width: 200.0,
-                    child: TextButton.icon(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: const BorderSide(color: Colors.red),
-                          ),
+                ),
+                SizedBox(
+                  height: 50.0,
+                  width: 200.0,
+                  child: TextButton.icon(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: const BorderSide(color: Colors.red),
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      label: const Text(
-                        'Annuleren',
-                        style: TextStyle(fontSize: 20.0, color: Colors.black),
-                      ),
-                      icon: const Icon(
-                        Icons.cancel,
-                        color: Colors.black,
-                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    label: const Text(
+                      'Annuleren',
+                      style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    ),
+                    icon: const Icon(
+                      Icons.cancel,
+                      color: Colors.black,
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

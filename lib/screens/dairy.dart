@@ -22,6 +22,7 @@ class _DairyPageState extends State<DairyPage> {
   Widget build(BuildContext context) {
     debugPrint('BuildContext');
     final fragments = context.watch<FragmentChangeNotifier>().fragmentsList;
+    final reversed = fragments.reversed.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Alle dagboek fragmenten'),
@@ -40,7 +41,7 @@ class _DairyPageState extends State<DairyPage> {
       body: ListView.builder(
         itemCount: fragments.length,
         itemBuilder: (context, index) {
-          final fragment = fragments[index];
+          final fragment = reversed[index];
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, '/update_fragment',
@@ -57,9 +58,6 @@ class _DairyPageState extends State<DairyPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      fragment.id.toString(),
-                    ),
                     Text(
                       fragment.title.toString(),
                       style: const TextStyle(

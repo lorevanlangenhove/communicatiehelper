@@ -20,7 +20,7 @@ class _SymbolsPageState extends State<SymbolsPage> {
         centerTitle: true,
       ),
       body: WebView(
-        initialUrl: 'https://app.mycoughdrop.com',
+        initialUrl: 'https://app.mycoughdrop.com/modemadvies/core-60_1',
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
           _controller.complete(webViewController);
@@ -34,3 +34,4 @@ class _SymbolsPageState extends State<SymbolsPage> {
 }
 // https://app.mycoughdrop.com
 // http://localhost:4200/
+// 'https://app.mycoughdrop.com'

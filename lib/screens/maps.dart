@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:communicatiehelper/screens/maps_fragment/application_block.dart';
-import 'package:communicatiehelper/screens/maps_fragment/places_service.dart';
+import 'package:communicatiehelper/screens/maps_fragment/places_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -71,25 +71,29 @@ class _MapsPageState extends State<MapsPage> {
               children: [
                 Row(
                   children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.search),
+                    ),
                     Expanded(
-                      child: TextFormField(
-                        controller: _searchController,
-                        textCapitalization: TextCapitalization.words,
-                        decoration: const InputDecoration(
-                          hintText: 'Zoek een plaats',
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 0.0, 0.0, 0.0),
+                        child: TextField(
+                          controller: _searchController,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: const InputDecoration(
+                            hintText: 'Zoek een plaats',
+                          ),
+                          onChanged: (value) {
+                            print(value);
+                          },
+                          onSubmitted: (value) async {
+                            var place = await PlaceService().getPlace(value);
+                            _goToPlace(place);
+                          },
                         ),
-                        onChanged: (value) {
-                          print(value);
-                        },
                       ),
                     ),
-                    IconButton(
-                        onPressed: () async {
-                          var place = await PlaceService()
-                              .getPlace(_searchController.text);
-                          _goToPlace(place);
-                        },
-                        icon: const Icon(Icons.search))
                   ],
                 ),
                 Expanded(

@@ -1,4 +1,5 @@
-import 'package:communicatiehelper/screens/maps_fragment/places_service.dart';
+import 'package:communicatiehelper/screens/maps_fragment/place_autocomplete_model.dart';
+import 'package:communicatiehelper/screens/maps_fragment/places_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'geolocator_servic.dart';
 
@@ -16,3 +17,22 @@ class ApplicationBlock with ChangeNotifier {
     notifyListeners();
   }
 }
+
+abstract class AutocompleteState {
+  const AutocompleteState();
+
+  List<Object> get props => [];
+}
+
+class AutocompleteLoading extends AutocompleteState {}
+
+class AutocompleteLoaded extends AutocompleteState {
+  final List<PlaceAutocomplete> autocomplete;
+
+  const AutocompleteLoaded({required this.autocomplete});
+
+  @override
+  List<Object> get props => [autocomplete];
+}
+
+class AutocompleteError extends AutocompleteState {}

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:communicatiehelper/components/custom_multiline.dart';
 import 'package:communicatiehelper/components/custom_text_form_field.dart';
 import 'package:communicatiehelper/database/db.dart';
 import 'package:flutter/material.dart';
@@ -144,22 +145,22 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                CustomTextFormField(
+          Column(
+            children: [
+              Form(
+                child: CustomTextFormField(
                     controller: _titleController, inputLabel: 'Titel'),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                CustomTextFormField(
-                    controller: _descriptionController, inputLabel: 'Tekst'),
-                const SizedBox(
-                  height: 50.0,
-                ),
-              ],
-            ),
+                key: _formKey,
+              ),
+              const SizedBox(
+                height: 8.0,
+              ),
+              CustomMultiline(
+                  controller: _descriptionController, inputLabel: 'Tekst'),
+              const SizedBox(
+                height: 50.0,
+              ),
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

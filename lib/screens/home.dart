@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Thuispagina'),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
