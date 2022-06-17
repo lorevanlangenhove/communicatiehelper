@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "378522451498",
+    "project_id": "commhelper-8d2f4",
+    "storage_bucket": "commhelper-8d2f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378522451498:android:4075066d502d9109954d53",
+        "android_client_info": {
+          "package_name": "com.example.communicatiehelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378522451498-j0mcsulau7mm1u2rmapshe9i43nu92fa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzEw04mpxRBVELYw9RsleS8eRSz8w3njg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378522451498-j0mcsulau7mm1u2rmapshe9i43nu92fa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378522451498-m5d6uf5qqbrk8nbvndh0kvrvr39h72da.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.communicatiehelper"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import '../../components/custom_text_form_field.dart';
 import '../../database/event.dart';
 
-class AddEvent extends StatefulWidget {
-  const AddEvent({Key? key, this.event}) : super(key: key);
-  final Event? event;
+class UpdateEvent extends StatefulWidget {
+  const UpdateEvent({Key? key, required this.event}) : super(key: key);
+  final Event event;
 
   @override
-  State<AddEvent> createState() => _AddEventState();
+  State<UpdateEvent> createState() => _UpdateEvent();
 }
 
-class _AddEventState extends State<AddEvent> {
+class _UpdateEvent extends State<UpdateEvent> {
   late DateTime fromDate;
   late DateTime toDate;
   final _formKey = GlobalKey<FormState>();
@@ -29,7 +29,7 @@ class _AddEventState extends State<AddEvent> {
       fromDate = DateTime.now();
       toDate = DateTime.now().add(const Duration(hours: 2));
     } else {
-      final event = widget.event!;
+      final event = widget.event;
       _titleController.text = event.title;
       _descriptionController.text = event.description;
       fromDate = event.from;
@@ -178,19 +178,17 @@ class _AddEventState extends State<AddEvent> {
   Future saveForm(Event event) async {
     final isValid = _formKey.currentState!.validate();
     final isValid1 = _formKey1.currentState!.validate();
-
     if (isValid && isValid1) {
-      final docEvent = FirebaseFirestore.instance.collection('events').doc();
-      event.id = docEvent.id;
-
+      final docEvent =
+          FirebaseFirestore.instance.collection('events').doc(event.id);
       final json = event.toJson();
       await docEvent
-          .set(json)
+          .update(json)
           .then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
                 MaterialBanner(
                   backgroundColor: Colors.green,
                   content: const Text(
-                    'Nieuwe afspraak is opgeslagen',
+                    'Afspraak is gewijzigd',
                     style: TextStyle(color: Colors.black),
                   ),
                   actions: [
@@ -198,6 +196,7 @@ class _AddEventState extends State<AddEvent> {
                       onPressed: () {
                         ScaffoldMessenger.of(context)
                             .hideCurrentMaterialBanner();
+                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Sluit',
@@ -207,13 +206,6 @@ class _AddEventState extends State<AddEvent> {
                   ],
                 ),
               ));
-
-      //final isEditing = widget.event != null;
-      //final provider = Provider.of<EventProvider>(context, listen: false);
-
-      //if (isEditing) {
-      //provider.editEvent(event, widget.event!);
-      //Navigator.of(context).pop();
     }
   }
 
@@ -262,6 +254,7 @@ class _AddEventState extends State<AddEvent> {
                     ),
                     onPressed: () {
                       final event = Event(
+                          id: widget.event.id,
                           title: _titleController.text,
                           description: _descriptionController.text,
                           from: fromDate,

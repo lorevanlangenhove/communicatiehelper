@@ -1,9 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communicatiehelper/database/event.dart';
-import 'package:communicatiehelper/screens/calendar_fragments/add_event.dart';
+import 'package:communicatiehelper/screens/calendar_fragments/update_event.dart';
 import 'package:communicatiehelper/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../event_provider.dart';
 
 class EventViewingPage extends StatefulWidget {
   final Event event;
@@ -25,7 +24,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
           IconButton(
             onPressed: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => AddEvent(event: widget.event)));
+                  builder: (context) => UpdateEvent(event: widget.event)));
             },
             icon: const Icon(
               Icons.edit,
@@ -34,10 +33,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
           ),
           IconButton(
             onPressed: () {
-              final provider =
-                  Provider.of<EventProvider>(context, listen: false);
-              provider.deleteEvent(widget.event);
-              Navigator.pop(context);
+              deleteEvent();
             },
             icon: const Icon(
               Icons.delete,
@@ -55,14 +51,36 @@ class _EventViewingPageState extends State<EventViewingPage> {
           ),
         ),
       ),
-      body: Column(
+      body: FutureBuilder<Event?>(
+        future: readEvent(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Er is iets misgelopen! ${snapshot.error}');
+          } else if (snapshot.hasData) {
+            final event = snapshot.data;
+            return event == null
+                ? const Center(
+                    child: Text('Er zijn geen afspraken'),
+                  )
+                : buildEvent(event);
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget buildEvent(Event event) => Column(
         children: [
           const SizedBox(
             height: 30,
           ),
           Center(
             child: Text(
-              widget.event.title,
+              event.title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
@@ -74,7 +92,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
           ),
           Center(
             child: Text(
-              widget.event.description,
+              event.description,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
@@ -103,7 +121,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
                     width: 30,
                   ),
                   Text(
-                    Utils.toDate(widget.event.from),
+                    Utils.toDate(event.from),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -113,7 +131,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
                     width: 10,
                   ),
                   Text(
-                    Utils.toTime(widget.event.from),
+                    Utils.toTime(event.from),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -141,7 +159,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
                     width: 30,
                   ),
                   Text(
-                    Utils.toDate(widget.event.to),
+                    Utils.toDate(event.to),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -151,7 +169,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
                     width: 10,
                   ),
                   Text(
-                    Utils.toTime(widget.event.to),
+                    Utils.toTime(event.to),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
@@ -162,7 +180,22 @@ class _EventViewingPageState extends State<EventViewingPage> {
             ],
           )
         ],
-      ),
-    );
+      );
+
+  Future<Event?> readEvent() async {
+    final docEvent =
+        FirebaseFirestore.instance.collection('events').doc(widget.event.id);
+    final snapshot = await docEvent.get();
+
+    if (snapshot.exists) {
+      return Event.fromJson(snapshot.data()!);
+    }
+  }
+
+  Future<void> deleteEvent() async {
+    return await FirebaseFirestore.instance
+        .collection('events')
+        .doc(widget.event.id)
+        .delete();
   }
 }

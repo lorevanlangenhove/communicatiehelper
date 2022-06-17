@@ -14,20 +14,7 @@ class _MapsPageState extends State<MapsPage> {
   final Completer<GoogleMapController> _mapController = Completer();
   TextEditingController _searchController = TextEditingController();
 
-  Set<Marker> _markers = Set<Marker>();
-  Set<Polygon> _polygons = Set<Polygon>();
   List<LatLng> polygonLatLngs = <LatLng>[];
-  int _polygonIdCounter = 1;
-
-  void _setMarker(LatLng point) {
-    setState(() {
-      _markers.add(Marker(
-        markerId: MarkerId('Marker'),
-        position: point,
-        icon: BitmapDescriptor.defaultMarker,
-      ));
-    });
-  }
 
   Future<void> _goToPlace(Map<String, dynamic> place) async {
     final double lat = place['geometry']['location']['lat'];
@@ -37,21 +24,6 @@ class _MapsPageState extends State<MapsPage> {
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: LatLng(lat, lng), zoom: 12),
-      ),
-    );
-    _setMarker(LatLng(lat, lng));
-  }
-
-  void _setPolygon() {
-    final String polygonIdVal = 'polygon_$_polygonIdCounter';
-    _polygonIdCounter++;
-
-    _polygons.add(
-      Polygon(
-        polygonId: PolygonId(polygonIdVal),
-        points: polygonLatLngs,
-        strokeColor: Colors.transparent,
-        strokeWidth: 2,
       ),
     );
   }
@@ -115,12 +87,6 @@ class _MapsPageState extends State<MapsPage> {
                         zoom: 15),
                     onMapCreated: (GoogleMapController controller) {
                       _mapController.complete(controller);
-                    },
-                    onTap: (point) {
-                      setState(() {
-                        polygonLatLngs.add(point);
-                        _setPolygon();
-                      });
                     },
                   ),
                 ),

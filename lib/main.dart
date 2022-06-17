@@ -3,12 +3,15 @@ import 'package:communicatiehelper/event_provider.dart';
 import 'package:communicatiehelper/notifier.dart';
 import 'package:communicatiehelper/route_generator.dart';
 import 'package:communicatiehelper/screens/maps_fragment/application_block.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
       Provider.value(value: AppDb()),
