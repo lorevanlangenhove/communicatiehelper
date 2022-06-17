@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:whiteboard/whiteboard.dart';
+import 'package:file_saver/file_saver.dart';
 
 class DrawingPage extends StatefulWidget {
   @override
@@ -7,18 +10,17 @@ class DrawingPage extends StatefulWidget {
 }
 
 class _DrawingPageState extends State<DrawingPage> {
-  late WhiteBoardController whiteBoardController;
-  WhiteBoard whiteBoard = const WhiteBoard(
-    strokeColor: Colors.black,
-  );
-
-  void _whiteboardController(WhiteBoardController controller) {
-    whiteBoardController = controller;
-  }
+  WhiteBoardController whiteBoardController = WhiteBoardController();
 
   @override
   initState() {
     super.initState();
+  }
+
+  WhiteBoard getColor(Color color) {
+    return WhiteBoard(
+      strokeColor: color,
+    );
   }
 
   @override
@@ -30,28 +32,24 @@ class _DrawingPageState extends State<DrawingPage> {
         actions: [
           IconButton(
             onPressed: () {
-              //_whiteboardController;
               whiteBoardController.redo();
             },
             icon: const Icon(Icons.redo),
           ),
           IconButton(
             onPressed: () {
-              _whiteboardController;
               whiteBoardController.undo();
             },
             icon: const Icon(Icons.undo),
           ),
           IconButton(
             onPressed: () {
-              //_whiteboardController;
               whiteBoardController.convertToImage();
             },
             icon: const Icon(Icons.save),
           ),
           IconButton(
             onPressed: () {
-              //_whiteboardController;
               whiteBoardController.clear();
             },
             icon: const Icon(Icons.delete),
@@ -65,13 +63,19 @@ class _DrawingPageState extends State<DrawingPage> {
           children: [
             Expanded(
               child: WhiteBoard(
-                controller: WhiteBoardController(),
+                controller: whiteBoardController,
+                onConvertImage: (Uint8List imageList) async {
+                  await FileSaver.instance
+                      .saveAs('Tekening', imageList, 'png', MimeType.PNG);
+                },
               ),
             ),
             Column(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    getColor(Colors.black);
+                  },
                   icon: const Icon(
                     Icons.circle,
                     color: Colors.black,
@@ -79,7 +83,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    whiteBoard.strokeColor.blue;
+                    getColor(Colors.blue);
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -88,7 +92,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    whiteBoard.strokeColor.green;
+                    getColor(Colors.green);
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -97,7 +101,7 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    whiteBoard.strokeColor.red;
+                    getColor(Colors.red);
                   },
                   icon: const Icon(
                     Icons.circle,
