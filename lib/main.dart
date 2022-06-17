@@ -1,7 +1,5 @@
-import 'package:communicatiehelper/database/db.dart';
 import 'package:communicatiehelper/event_provider.dart';
-import 'package:communicatiehelper/notifier.dart';
-import 'package:communicatiehelper/route_generator.dart';
+import 'package:communicatiehelper/screens/home.dart';
 import 'package:communicatiehelper/screens/maps_fragment/application_block.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +12,6 @@ Future main() async {
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
-      Provider.value(value: AppDb()),
-      ChangeNotifierProxyProvider<AppDb, FragmentChangeNotifier>(
-          create: (context) => FragmentChangeNotifier(),
-          update: (context, db, notifier) => notifier!
-            ..initAppDb(db)
-            ..getFragments()),
       ChangeNotifierProvider(create: (context) => EventProvider()),
       ChangeNotifierProvider(create: (context) => ApplicationBlock()),
     ],
@@ -30,19 +22,21 @@ Future main() async {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+      },
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         SfGlobalLocalizations.delegate
       ],
-      supportedLocales: [Locale('nl')],
-      locale: Locale('nl'),
+      supportedLocales: const [Locale('nl')],
+      locale: const Locale('nl'),
       color: Colors.white,
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

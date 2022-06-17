@@ -1,18 +1,17 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communicatiehelper/components/custom_multiline.dart';
 import 'package:communicatiehelper/components/custom_text_form_field.dart';
-import 'package:communicatiehelper/database/db.dart';
+import 'package:communicatiehelper/database/fragment.dart';
 import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class UpdateDairyFragment extends StatefulWidget {
-  final int id;
+  final Fragment fragment;
 
-  const UpdateDairyFragment({Key? key, required this.id}) : super(key: key);
+  const UpdateDairyFragment({Key? key, required this.fragment})
+      : super(key: key);
 
   @override
   State<UpdateDairyFragment> createState() => _UpdateDairyFragmentState();
@@ -21,7 +20,6 @@ class UpdateDairyFragment extends StatefulWidget {
 class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  late DairyData _dairyData;
   final _formKey = GlobalKey<FormState>();
   File? img;
 
@@ -49,8 +47,10 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
 
   @override
   void initState() {
+    final fragment = widget.fragment;
+    _titleController.text = fragment.title;
+    _descriptionController.text = fragment.description;
     super.initState();
-    getFragment();
   }
 
   @override
@@ -60,17 +60,14 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
     super.dispose();
   }
 
-  void updateDairyFragment() {
+  Future updateFragment(Fragment fragment) async {
     final isValid = _formKey.currentState?.validate();
 
     if (isValid != null && isValid) {
-      final entity = DairyCompanion(
-        id: drift.Value(widget.id),
-        title: drift.Value(_titleController.text),
-        description: drift.Value(_descriptionController.text),
-        created: drift.Value(DateTime.now()),
-      );
-      Provider.of<AppDb>(context, listen: false).updateFragment(entity).then(
+      final docFragment =
+          FirebaseFirestore.instance.collection('fragments').doc(fragment.id);
+      final json = fragment.toJson();
+      await docFragment.update(json).then(
             (value) => ScaffoldMessenger.of(context).showMaterialBanner(
               MaterialBanner(
                 backgroundColor: Colors.green,
@@ -95,52 +92,12 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
     }
   }
 
-  Future<void> getFragment() async {
-    _dairyData =
-        await Provider.of<AppDb>(context, listen: false).getFragment(widget.id);
-    _titleController.text = _dairyData.title;
-    _descriptionController.text = _dairyData.description;
-  }
-
-  void deleteFragment() {
-    Provider.of<AppDb>(context, listen: false).deleteFragment(widget.id).then(
-          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
-            MaterialBanner(
-              backgroundColor: Colors.red,
-              content: const Text(
-                'Dagboek fragment is verwijdert',
-                style: TextStyle(color: Colors.black),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-                  },
-                  child: const Text(
-                    'Sluit',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Wijzig dagboek fragment'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              deleteFragment();
-            },
-            icon: const Icon(Icons.delete),
-          ),
-        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +196,12 @@ class _UpdateDairyFragmentState extends State<UpdateDairyFragment> {
                     ),
                   ),
                   onPressed: () {
-                    updateDairyFragment();
+                    final fragment = Fragment(
+                        id: widget.fragment.id,
+                        title: _titleController.text,
+                        description: _descriptionController.text,
+                        created: DateTime.now());
+                    updateFragment(fragment);
                   },
                   label: const Text(
                     'Opslaan',

@@ -59,7 +59,6 @@ class _CalendarPageState extends State<CalendarPage> {
               backgroundColor: Colors.white,
               initialSelectedDate: DateTime.now(),
               onTap: (details) {
-                print((details.appointments!.first as Event).title);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => EventViewingPage(
                         event: details.appointments!.first as Event)));

@@ -184,36 +184,28 @@ class _AddEventState extends State<AddEvent> {
       event.id = docEvent.id;
 
       final json = event.toJson();
-      await docEvent
-          .set(json)
-          .then((value) => ScaffoldMessenger.of(context).showMaterialBanner(
-                MaterialBanner(
-                  backgroundColor: Colors.green,
-                  content: const Text(
-                    'Nieuwe afspraak is opgeslagen',
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context)
-                            .hideCurrentMaterialBanner();
-                      },
-                      child: const Text(
-                        'Sluit',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
+      await docEvent.set(json).then(
+            (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+              MaterialBanner(
+                backgroundColor: Colors.green,
+                content: const Text(
+                  'Nieuwe afspraak is opgeslagen',
+                  style: TextStyle(color: Colors.black),
                 ),
-              ));
-
-      //final isEditing = widget.event != null;
-      //final provider = Provider.of<EventProvider>(context, listen: false);
-
-      //if (isEditing) {
-      //provider.editEvent(event, widget.event!);
-      //Navigator.of(context).pop();
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                    },
+                    child: const Text(
+                      'Sluit',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
     }
   }
 

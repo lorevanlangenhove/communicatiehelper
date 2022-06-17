@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:communicatiehelper/screens/maps_fragment/place.dart';
 import 'package:communicatiehelper/screens/maps_fragment/place_search.dart';
 import 'package:communicatiehelper/screens/maps_fragment/places_service.dart';

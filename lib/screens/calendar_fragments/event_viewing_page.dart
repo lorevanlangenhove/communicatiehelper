@@ -18,7 +18,7 @@ class _EventViewingPageState extends State<EventViewingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Afspraak'),
+        title: Text(widget.event.title),
         centerTitle: true,
         actions: [
           IconButton(
@@ -196,6 +196,28 @@ class _EventViewingPageState extends State<EventViewingPage> {
     return await FirebaseFirestore.instance
         .collection('events')
         .doc(widget.event.id)
-        .delete();
+        .delete()
+        .then(
+          (value) => ScaffoldMessenger.of(context).showMaterialBanner(
+            MaterialBanner(
+              backgroundColor: Colors.red,
+              content: const Text(
+                'Afspraak is verwijderd.',
+                style: TextStyle(color: Colors.black),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: const Text(
+                    'Sluit',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
   }
 }

@@ -196,7 +196,6 @@ class _UpdateEvent extends State<UpdateEvent> {
                       onPressed: () {
                         ScaffoldMessenger.of(context)
                             .hideCurrentMaterialBanner();
-                        Navigator.pop(context);
                       },
                       child: const Text(
                         'Sluit',

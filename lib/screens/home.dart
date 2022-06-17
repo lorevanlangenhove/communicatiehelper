@@ -1,3 +1,15 @@
+import 'package:communicatiehelper/screens/calendar.dart';
+import 'package:communicatiehelper/screens/camera.dart';
+import 'package:communicatiehelper/screens/dairy.dart';
+import 'package:communicatiehelper/screens/drawing.dart';
+import 'package:communicatiehelper/screens/maps.dart';
+import 'package:communicatiehelper/screens/news.dart';
+import 'package:communicatiehelper/screens/photo.dart';
+import 'package:communicatiehelper/screens/settings.dart';
+import 'package:communicatiehelper/screens/social.dart';
+import 'package:communicatiehelper/screens/symbols.dart';
+import 'package:communicatiehelper/screens/user.dart';
+import 'package:communicatiehelper/screens/video.dart';
 import 'package:flutter/material.dart';
 
 import '../build_card.dart';
@@ -22,75 +34,135 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Cards(
-                imageName: 'maps',
-                name: 'Kaarten',
-                routeName: '/maps',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => MapsPage()));
+                },
+                child: Cards(
+                  imageName: 'maps',
+                  name: 'Kaarten',
+                ),
               ),
-              Cards(
-                imageName: 'dairy',
-                name: 'Dagboek',
-                routeName: '/dairy',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => DairyPage()));
+                },
+                child: Cards(
+                  imageName: 'dairy',
+                  name: 'Dagboek',
+                ),
               ),
-              Cards(
-                imageName: 'news',
-                name: 'Nieuws',
-                routeName: '/news',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => NewsPage()));
+                },
+                child: Cards(
+                  imageName: 'news',
+                  name: 'Nieuws',
+                ),
               ),
-              Cards(
-                imageName: 'calendar',
-                name: 'Agenda',
-                routeName: '/calendar',
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Cards(
-                imageName: 'drawing',
-                name: 'Tekenen',
-                routeName: '/drawing',
-              ),
-              Cards(
-                imageName: 'settings',
-                name: 'Instellingen',
-                routeName: '/settings',
-              ),
-              Cards(
-                imageName: 'user',
-                name: 'Gebruiker',
-                routeName: '/user',
-              ),
-              Cards(
-                imageName: 'symbols',
-                name: 'Symbolenkaart',
-                routeName: '/symbols',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CalendarPage()));
+                },
+                child: Cards(
+                  imageName: 'calendar',
+                  name: 'Kalender',
+                ),
               ),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Cards(
-                imageName: 'camera',
-                name: 'Camera',
-                routeName: '/camera',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => DrawingPage()));
+                },
+                child: Cards(
+                  imageName: 'drawing',
+                  name: 'Tekenen',
+                ),
               ),
-              Cards(
-                imageName: 'photo',
-                name: 'Foto\'s',
-                routeName: '/photo',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SettingsPage()));
+                },
+                child: Cards(
+                  imageName: 'settings',
+                  name: 'Instellingen',
+                ),
               ),
-              Cards(
-                imageName: 'videocall',
-                name: 'Video bellen',
-                routeName: '/video',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => UserssPage()));
+                },
+                child: Cards(
+                  imageName: 'user',
+                  name: 'Gebruiker',
+                ),
               ),
-              Cards(
-                imageName: 'socialmedia',
-                name: 'Sociale media',
-                routeName: '/social',
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SymbolsPage()));
+                },
+                child: Cards(
+                  imageName: 'symbols',
+                  name: 'Symbolenkaart',
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => CameraPage()));
+                },
+                child: Cards(
+                  imageName: 'camera',
+                  name: 'Camera',
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => PhotosPage()));
+                },
+                child: Cards(
+                  imageName: 'photo',
+                  name: 'Foto\'s',
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => VideosPage()));
+                },
+                child: Cards(
+                  imageName: 'videocall',
+                  name: 'Video bellen',
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SocialsPage()));
+                },
+                child: Cards(
+                  imageName: 'socialmedia',
+                  name: 'Sociale media',
+                ),
               ),
             ],
           )

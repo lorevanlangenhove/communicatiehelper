@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:communicatiehelper/components/custom_multiline.dart';
 import 'package:communicatiehelper/components/custom_text_form_field.dart';
-import 'package:communicatiehelper/database/db.dart';
 import 'package:flutter/material.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../database/fragment.dart';
 
 class AddDairyFragment extends StatefulWidget {
   @override
@@ -53,16 +52,16 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
     super.dispose();
   }
 
-  void addDairyFragment() {
+  Future addFragment(Fragment fragment) async {
     final isValid = _formKey.currentState?.validate();
 
     if (isValid != null && isValid) {
-      final entity = DairyCompanion(
-        title: drift.Value(_titleController.text),
-        description: drift.Value(_descriptionController.text),
-        created: drift.Value(DateTime.now()),
-      );
-      Provider.of<AppDb>(context, listen: false).insertFragment(entity).then(
+      final docFragment =
+          FirebaseFirestore.instance.collection('fragments').doc();
+      fragment.id = docFragment.id;
+
+      final json = fragment.toJson();
+      await docFragment.set(json).then(
             (value) => ScaffoldMessenger.of(context).showMaterialBanner(
               MaterialBanner(
                 backgroundColor: Colors.green,
@@ -191,7 +190,11 @@ class _AddDairyFragmentState extends State<AddDairyFragment> {
                     ),
                   ),
                   onPressed: () {
-                    addDairyFragment();
+                    final fragment = Fragment(
+                        title: _titleController.text,
+                        description: _descriptionController.text,
+                        created: DateTime.now());
+                    addFragment(fragment);
                   },
                   label: const Text(
                     'Opslaan',
