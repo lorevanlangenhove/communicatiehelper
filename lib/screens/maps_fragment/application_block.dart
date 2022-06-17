@@ -1,5 +1,8 @@
-import 'package:communicatiehelper/screens/maps_fragment/place_autocomplete_model.dart';
-import 'package:communicatiehelper/screens/maps_fragment/places_repository.dart';
+import 'dart:async';
+
+import 'package:communicatiehelper/screens/maps_fragment/place.dart';
+import 'package:communicatiehelper/screens/maps_fragment/place_search.dart';
+import 'package:communicatiehelper/screens/maps_fragment/places_service.dart';
 import 'package:flutter/foundation.dart';
 import 'geolocator_servic.dart';
 
@@ -7,6 +10,8 @@ class ApplicationBlock with ChangeNotifier {
   final geolocatorService = GeolocatorService();
   final placesService = PlaceService();
   var currentLocation;
+  List<PlaceSearch> searchResults = <PlaceSearch>[];
+  StreamController<Place> selectedLocation = StreamController<Place>();
 
   ApplicationBlock() {
     setCurrentLocation();
@@ -16,23 +21,21 @@ class ApplicationBlock with ChangeNotifier {
     currentLocation = await geolocatorService.getCurrentLocation();
     notifyListeners();
   }
-}
 
-abstract class AutocompleteState {
-  const AutocompleteState();
+  searchPlaces(String searchTerm) async {
+    searchResults = await placesService.getAutocomplete(searchTerm);
+    notifyListeners();
+  }
 
-  List<Object> get props => [];
-}
-
-class AutocompleteLoading extends AutocompleteState {}
-
-class AutocompleteLoaded extends AutocompleteState {
-  final List<PlaceAutocomplete> autocomplete;
-
-  const AutocompleteLoaded({required this.autocomplete});
+  setSelectedLocation(String placeId) async {
+    selectedLocation.add(await placesService.getPlace(placeId));
+    searchResults.clear();
+    notifyListeners();
+  }
 
   @override
-  List<Object> get props => [autocomplete];
+  void dispose() {
+    super.dispose();
+    selectedLocation.close();
+  }
 }
-
-class AutocompleteError extends AutocompleteState {}

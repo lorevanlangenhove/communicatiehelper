@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:communicatiehelper/screens/maps_fragment/application_block.dart';
-import 'package:communicatiehelper/screens/maps_fragment/places_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
+import 'maps_fragment/place.dart';
 
 class MapsPage extends StatefulWidget {
   @override
@@ -11,21 +12,44 @@ class MapsPage extends StatefulWidget {
 }
 
 class _MapsPageState extends State<MapsPage> {
-  final Completer<GoogleMapController> _mapController = Completer();
+  Completer<GoogleMapController> _mapController = Completer();
   TextEditingController _searchController = TextEditingController();
+  late StreamSubscription locationSubscription;
 
   List<LatLng> polygonLatLngs = <LatLng>[];
 
-  Future<void> _goToPlace(Map<String, dynamic> place) async {
-    final double lat = place['geometry']['location']['lat'];
-    final double lng = place['geometry']['location']['lng'];
-
+  Future<void> _goToPlace(Place place) async {
     final GoogleMapController controller = await _mapController.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(lat, lng), zoom: 12),
+        CameraPosition(
+            target: LatLng(
+                place.geometry.location.lat, place.geometry.location.lng),
+            zoom: 12),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    final applicationBlock =
+        Provider.of<ApplicationBlock>(context, listen: false);
+    locationSubscription =
+        applicationBlock.selectedLocation.stream.listen((place) {
+      if (place != null) {
+        _goToPlace(place);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    final applicationBlock =
+        Provider.of<ApplicationBlock>(context, listen: false);
+    applicationBlock.dispose();
+    locationSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -57,38 +81,74 @@ class _MapsPageState extends State<MapsPage> {
                             hintText: 'Zoek een plaats',
                           ),
                           onChanged: (value) {
-                            print(value);
+                            applicationBlock.searchPlaces(value);
                           },
                           onSubmitted: (value) async {
-                            var place = await PlaceService().getPlace(value);
-                            _goToPlace(place);
+                            applicationBlock.searchPlaces(value);
+                            //_goToPlace(place);
                           },
                         ),
                       ),
                     ),
                   ],
                 ),
-                Expanded(
-                  child: GoogleMap(
-                    mapType: MapType.normal,
-                    markers: {
-                      Marker(
-                          markerId: const MarkerId('Thuis'),
-                          infoWindow: const InfoWindow(title: 'Thuis'),
-                          icon: BitmapDescriptor.defaultMarker,
-                          position: LatLng(
-                              applicationBlock.currentLocation.latitude,
-                              applicationBlock.currentLocation.longitude))
-                    },
-                    initialCameraPosition: CameraPosition(
-                        target: LatLng(
-                            applicationBlock.currentLocation.latitude,
-                            applicationBlock.currentLocation.longitude),
-                        zoom: 15),
-                    onMapCreated: (GoogleMapController controller) {
-                      _mapController.complete(controller);
-                    },
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                      height: 600,
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        markers: {
+                          Marker(
+                              markerId: const MarkerId('Thuis'),
+                              infoWindow: const InfoWindow(title: 'Thuis'),
+                              icon: BitmapDescriptor.defaultMarker,
+                              position: LatLng(
+                                  applicationBlock.currentLocation.latitude,
+                                  applicationBlock.currentLocation.longitude))
+                        },
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(
+                                applicationBlock.currentLocation.latitude,
+                                applicationBlock.currentLocation.longitude),
+                            zoom: 15),
+                        onMapCreated: (GoogleMapController controller) {
+                          _mapController.complete(controller);
+                        },
+                      ),
+                    ),
+                    if (applicationBlock.searchResults != null &&
+                        applicationBlock.searchResults.length != 0)
+                      Container(
+                        height: 300,
+                        width: 400,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            backgroundBlendMode: BlendMode.darken),
+                      ),
+                    if (applicationBlock.searchResults != null &&
+                        applicationBlock.searchResults.length != 0)
+                      Container(
+                        height: 300,
+                        child: ListView.builder(
+                          itemCount: applicationBlock.searchResults.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                applicationBlock
+                                    .searchResults[index].description,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onTap: () {
+                                applicationBlock.setSelectedLocation(
+                                    applicationBlock
+                                        .searchResults[index].placeId);
+                              },
+                            );
+                          },
+                        ),
+                      )
+                  ],
                 ),
               ],
             ),
