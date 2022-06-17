@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whiteboard/whiteboard.dart';
 import 'package:file_saver/file_saver.dart';
@@ -11,15 +11,22 @@ class DrawingPage extends StatefulWidget {
 
 class _DrawingPageState extends State<DrawingPage> {
   WhiteBoardController whiteBoardController = WhiteBoardController();
-
+  Color color = Colors.red;
+  bool erasing = false;
   @override
   initState() {
     super.initState();
   }
 
-  WhiteBoard getColor(Color color) {
+  WhiteBoard getColor() {
     return WhiteBoard(
       strokeColor: color,
+      isErasing: erasing,
+      controller: whiteBoardController,
+      onConvertImage: (Uint8List imageList) async {
+        await FileSaver.instance
+            .saveAs('Tekening', imageList, 'png', MimeType.PNG);
+      },
     );
   }
 
@@ -63,6 +70,8 @@ class _DrawingPageState extends State<DrawingPage> {
           children: [
             Expanded(
               child: WhiteBoard(
+                strokeColor: color,
+                isErasing: erasing,
                 controller: whiteBoardController,
                 onConvertImage: (Uint8List imageList) async {
                   await FileSaver.instance
@@ -74,16 +83,17 @@ class _DrawingPageState extends State<DrawingPage> {
               children: [
                 IconButton(
                   onPressed: () {
-                    getColor(Colors.black);
+                    color = Colors.black;
+                    print(color);
                   },
                   icon: const Icon(
                     Icons.circle,
-                    color: Colors.black,
                   ),
                 ),
                 IconButton(
                   onPressed: () {
-                    getColor(Colors.blue);
+                    color = Colors.blue;
+                    print(color);
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -92,7 +102,8 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    getColor(Colors.green);
+                    color = Colors.green;
+                    print(color);
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -101,7 +112,8 @@ class _DrawingPageState extends State<DrawingPage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    getColor(Colors.red);
+                    color = Colors.red;
+                    print(color);
                   },
                   icon: const Icon(
                     Icons.circle,
@@ -113,19 +125,6 @@ class _DrawingPageState extends State<DrawingPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ColorWhiteboard extends StatelessWidget {
-  ColorWhiteboard({required this.color});
-
-  Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return WhiteBoard(
-      strokeColor: color,
     );
   }
 }
