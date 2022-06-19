@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:communicatiehelper/event_provider.dart';
 import 'package:communicatiehelper/screens/calendar_fragments/add_event.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../database/event.dart';
 import '../event_data_source.dart';
 import 'calendar_fragments/event_viewing_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -15,16 +12,9 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  late SharedPreferences prefs;
-  @override
-  initState() {
-    super.initState();
-  }
-
+  final CalendarController _controller = CalendarController();
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<EventProvider>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kalender'),
@@ -48,6 +38,7 @@ class _CalendarPageState extends State<CalendarPage> {
             return Text('Something went wrong! ${snapshot.error}');
           } else if (snapshot.hasData) {
             return SfCalendar(
+              controller: _controller,
               allowedViews: const [
                 CalendarView.day,
                 CalendarView.week,
@@ -59,10 +50,15 @@ class _CalendarPageState extends State<CalendarPage> {
               backgroundColor: Colors.white,
               initialSelectedDate: DateTime.now(),
               onTap: (details) {
+                if (details.appointments!.length > 1 &&
+                    (_controller.view == CalendarView.month ||
+                        _controller.view == CalendarView.week)) {
+                  _controller.view = CalendarView.day;
+                }
+
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => EventViewingPage(
                         event: details.appointments!.first as Event)));
-                provider.setDate(details.date!);
               },
             );
           } else {
