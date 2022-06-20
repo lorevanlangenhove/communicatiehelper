@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:communicatiehelper/components/custom_multiline.dart';
-import 'package:communicatiehelper/utils.dart';
+import 'package:communicatiehelper/screens/calendar_fragments/utils.dart';
 import 'package:flutter/material.dart';
 import '../../components/custom_text_form_field.dart';
-import '../../database/event.dart';
+import '../../models/event.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({Key? key, this.event}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:communicatiehelper/database/fragment.dart';
+import '../../models/fragment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dairy_fragments/add_dairy_fragment.dart';
@@ -11,16 +11,6 @@ class DairyPage extends StatefulWidget {
 }
 
 class _DairyPageState extends State<DairyPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,10 +73,6 @@ class _DairyPageState extends State<DairyPage> {
                 fragment.title.toString(),
                 style:
                     const TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
-              ),
-              Text(
-                fragment.description.toString(),
-                style: const TextStyle(fontSize: 20),
               ),
               Text(formatted),
             ],

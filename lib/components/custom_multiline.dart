@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:communicatiehelper/constants.dart';
+import 'package:communicatiehelper/components/constants.dart';
 
 class CustomMultiline extends StatelessWidget {
   CustomMultiline({required this.controller, required this.inputLabel});

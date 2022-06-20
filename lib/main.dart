@@ -1,6 +1,6 @@
-import 'package:communicatiehelper/event_provider.dart';
 import 'package:communicatiehelper/screens/home.dart';
 import 'package:communicatiehelper/screens/maps_fragment/application_block.dart';
+import 'package:communicatiehelper/theme_providor.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,6 @@ Future main() async {
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => EventProvider()),
       ChangeNotifierProvider(create: (context) => ApplicationBlock()),
     ],
     child: Home(),
@@ -23,6 +22,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
+      theme: MyThemes.lightTheme,
+      darkTheme: MyThemes.darkTheme,
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),

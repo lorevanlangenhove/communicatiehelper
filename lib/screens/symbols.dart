@@ -32,6 +32,3 @@ class _SymbolsPageState extends State<SymbolsPage> {
     );
   }
 }
-// https://app.mycoughdrop.com
-// http://localhost:4200/
-// 'https://app.mycoughdrop.com'

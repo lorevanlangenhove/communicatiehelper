@@ -11,8 +11,7 @@ import 'package:communicatiehelper/screens/symbols.dart';
 import 'package:communicatiehelper/screens/user.dart';
 import 'package:communicatiehelper/screens/video.dart';
 import 'package:flutter/material.dart';
-
-import '../build_card.dart';
+import '../components/build_card.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,7 +26,6 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Thuispagina'),
         centerTitle: true,
       ),
-      backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

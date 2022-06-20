@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whiteboard/whiteboard.dart';
 import 'package:file_saver/file_saver.dart';
@@ -11,24 +10,6 @@ class DrawingPage extends StatefulWidget {
 
 class _DrawingPageState extends State<DrawingPage> {
   WhiteBoardController whiteBoardController = WhiteBoardController();
-  Color color = Colors.red;
-  bool erasing = false;
-  @override
-  initState() {
-    super.initState();
-  }
-
-  WhiteBoard getColor() {
-    return WhiteBoard(
-      strokeColor: color,
-      isErasing: erasing,
-      controller: whiteBoardController,
-      onConvertImage: (Uint8List imageList) async {
-        await FileSaver.instance
-            .saveAs('Tekening', imageList, 'png', MimeType.PNG);
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,57 +51,13 @@ class _DrawingPageState extends State<DrawingPage> {
           children: [
             Expanded(
               child: WhiteBoard(
-                strokeColor: color,
-                isErasing: erasing,
+                strokeColor: Colors.black,
                 controller: whiteBoardController,
                 onConvertImage: (Uint8List imageList) async {
                   await FileSaver.instance
                       .saveAs('Tekening', imageList, 'png', MimeType.PNG);
                 },
               ),
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    color = Colors.black;
-                    print(color);
-                  },
-                  icon: const Icon(
-                    Icons.circle,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    color = Colors.blue;
-                    print(color);
-                  },
-                  icon: const Icon(
-                    Icons.circle,
-                    color: Colors.blue,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    color = Colors.green;
-                    print(color);
-                  },
-                  icon: const Icon(
-                    Icons.circle,
-                    color: Colors.green,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    color = Colors.red;
-                    print(color);
-                  },
-                  icon: const Icon(
-                    Icons.circle,
-                    color: Colors.red,
-                  ),
-                ),
-              ],
             ),
           ],
         ),

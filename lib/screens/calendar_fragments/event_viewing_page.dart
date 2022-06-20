@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:communicatiehelper/database/event.dart';
+import '../../models/event.dart';
 import 'package:communicatiehelper/screens/calendar_fragments/update_event.dart';
-import 'package:communicatiehelper/utils.dart';
+import 'package:communicatiehelper/screens/calendar_fragments/utils.dart';
 import 'package:flutter/material.dart';
 
 class EventViewingPage extends StatefulWidget {

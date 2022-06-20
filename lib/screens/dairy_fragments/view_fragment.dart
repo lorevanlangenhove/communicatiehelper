@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:communicatiehelper/database/fragment.dart';
+import '../../models/fragment.dart';
 import 'package:communicatiehelper/screens/dairy_fragments/update_dairy_fragment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,11 +18,6 @@ class _ViewFragment extends State<ViewFragment> {
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _descriptionController.dispose();
     _titleController.dispose();
@@ -31,7 +26,6 @@ class _ViewFragment extends State<ViewFragment> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('BuildContext');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Een dagboek fragment'),
