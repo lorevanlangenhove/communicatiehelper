@@ -65,7 +65,7 @@ class _ViewFragment extends State<ViewFragment> {
               final fragment = snapshot.data;
               return fragment == null
                   ? const Center(
-                      child: Text('Er zijn geen afspraken'),
+                      child: Text('Er zijn geen fragmenten'),
                     )
                   : buildFragment(fragment);
             } else {

@@ -3,7 +3,6 @@ import 'package:communicatiehelper/screens/maps_fragment/application_block.dart'
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
 import 'maps_fragment/place.dart';
 
 class MapsPage extends StatefulWidget {
@@ -83,10 +82,6 @@ class _MapsPageState extends State<MapsPage> {
                           onChanged: (value) {
                             applicationBlock.searchPlaces(value);
                           },
-                          onSubmitted: (value) async {
-                            applicationBlock.searchPlaces(value);
-                            //_goToPlace(place);
-                          },
                         ),
                       ),
                     ),
@@ -137,7 +132,7 @@ class _MapsPageState extends State<MapsPage> {
                               title: Text(
                                 applicationBlock
                                     .searchResults[index].description,
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                               onTap: () {
                                 applicationBlock.setSelectedLocation(

@@ -38,7 +38,6 @@ class Home extends StatelessWidget {
       ],
       supportedLocales: const [Locale('nl')],
       locale: const Locale('nl'),
-      color: Colors.white,
     );
   }
 }
